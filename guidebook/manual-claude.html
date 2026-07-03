@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 会议记录助手 — Claude Code 版用户手册</title>
+<style>
+  :root {
+    --primary: #2563eb; --primary-light: #dbeafe; --primary-dark: #1d4ed8;
+    --accent: #f59e0b; --accent-light: #fef3c7;
+    --green: #10b981; --green-light: #d1fae5;
+    --red: #ef4444; --red-light: #fee2e2;
+    --gray-50:#f9fafb; --gray-100:#f3f4f6; --gray-200:#e5e7eb; --gray-300:#d1d5db;
+    --gray-600:#4b5563; --gray-700:#374151; --gray-800:#1f2937; --gray-900:#111827;
+    --radius:12px; --shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
+    --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:var(--gray-800);background:var(--gray-50);line-height:1.7;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  /* 顶部品牌 + 目录 */
+  .topnav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-200);padding:0 24px;}
+  .topnav-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;flex-wrap:wrap;gap:8px;}
+  .brand{font-size:18px;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:8px;}
+  .toc{display:flex;gap:4px;flex-wrap:wrap;}
+  .toc a{font-size:13px;font-weight:500;color:var(--gray-600);padding:6px 10px;border-radius:6px;text-decoration:none;white-space:nowrap;}
+  .toc a:hover{background:var(--primary-light);color:var(--primary);}
+
+  /* Hero */
+  .hero{padding:48px 0 32px;text-align:center;}
+  .hero h1{font-size:34px;font-weight:800;background:linear-gradient(135deg,var(--primary),#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .hero p{margin-top:12px;font-size:16px;color:var(--gray-600);}
+  .badges{margin-top:18px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:6px 14px;border-radius:999px;}
+  .badge-blue{background:var(--primary-light);color:var(--primary);}
+
+  /* 章节 */
+  section.chapter{padding:40px 0;border-top:1px solid var(--gray-200);}
+  section.chapter:first-of-type{border-top:none;}
+  .ch-head{margin-bottom:24px;}
+  .ch-head h2{font-size:26px;font-weight:700;color:var(--gray-900);display:flex;align-items:center;gap:10px;}
+  .ch-head p{margin-top:8px;font-size:15px;color:var(--gray-600);}
+
+  /* 步骤 */
+  .steps{display:flex;flex-direction:column;gap:20px;}
+  .step-item{display:flex;gap:16px;align-items:flex-start;}
+  .step-marker{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--primary-light);color:var(--primary);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;}
+  .step-content{flex:1;}
+  .step-content h4{font-size:16px;font-weight:600;margin-bottom:4px;}
+  .step-content p{font-size:14px;color:var(--gray-600);}
+  .step-content p + p{margin-top:6px;}
+
+  /* 卡片 */
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+  .card{background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
+  .card h3{font-size:16px;font-weight:600;margin-bottom:8px;}
+  .card p,.card ul{font-size:14px;color:var(--gray-600);}
+  .card ul{padding-left:18px;} .card li{margin-bottom:4px;}
+
+  /* 代码 */
+  .code-block{background:var(--gray-900);color:#e5e7eb;border-radius:8px;padding:14px 18px;font-family:"Cascadia Code","Fira Code","Consolas",monospace;font-size:13px;line-height:1.6;overflow-x:auto;margin:10px 0;}
+  .code-block .comment{color:#6b7280;} .code-block .cmd{color:#93c5fd;} .code-block .flag{color:#fbbf24;} .code-block .path{color:#86efac;}
+
+  /* 提示 */
+  .tip{border-radius:8px;padding:14px 18px;margin:14px 0;font-size:14px;display:flex;gap:10px;align-items:flex-start;}
+  .tip-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+  .tip-info{background:var(--primary-light);color:var(--primary-dark);}
+  .tip-warn{background:var(--accent-light);color:#92400e;}
+  .tip-success{background:var(--green-light);color:#065f46;}
+
+  /* 表格 */
+  .table-wrap{overflow-x:auto;margin:14px 0;}
+  table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:8px;overflow:hidden;box-shadow:var(--shadow);}
+  thead{background:var(--gray-100);} th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--gray-200);}
+  th{font-weight:600;color:var(--gray-700);font-size:13px;} td{color:var(--gray-800);}
+
+  h4.sub{margin:22px 0 8px;font-size:17px;font-weight:600;}
+
+  /* ===== 截图悬停功能 ===== */
+  /* 给每个可截图节点预留：加 data-screenshot 即自动生效；值="placeholder" 显示占位，未来换成图片路径即可 */
+  .has-shot{position:relative;}
+  .has-shot::after{content:"📷";position:absolute;top:-2px;right:-2px;font-size:12px;opacity:.35;pointer-events:none;}
+  #shot-layer{position:fixed;display:none;max-width:min(520px,80vw);border:1px solid var(--gray-300);border-radius:8px;background:#fff;box-shadow:var(--shadow-lg);padding:6px;z-index:1000;pointer-events:none;}
+  #shot-layer.show{display:block;}
+  #shot-layer img{display:block;max-width:100%;border-radius:4px;}
+  #shot-layer .shot-cap{font-size:12px;color:var(--gray-600);text-align:center;padding:4px 2px 2px;}
+
+  .footer{padding:32px 0;text-align:center;font-size:13px;color:var(--gray-300);border-top:1px solid var(--gray-200);}
+
+  @media(max-width:768px){.hero h1{font-size:26px;}.topnav-inner{height:auto;padding:8px 0;}.toc{overflow-x:auto;}}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="brand">📘 Claude Code 版手册</div>
+    <div class="toc">
+      <a href="#ov">概述</a><a href="#install">安装</a><a href="#skill">装技能</a>
+      <a href="#config">配置</a><a href="#use">使用</a><a href="#check">核对</a><a href="#faq">常见问题</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header class="hero" id="ov">
+  <h1>AI 会议记录助手</h1>
+  <p>Claude Code 版用户手册 · 从安装到出纪要的完整流程</p>
+  <div class="badges"><span class="badge badge-blue">💻 命令行</span><span class="badge badge-blue">⚙️ 可自定义模型</span><span class="badge badge-blue">⚡ 较快</span></div>
+</header>
+
+<!-- 1 概述 -->
+<section class="chapter" id="ov">
+  <div class="ch-head">
+    <h2><span>📌</span> 概述</h2>
+    <p>本手册面向使用 <strong>Claude Code</strong>（命令行 AI 编程助手）的用户。meetings 技能把会议转录文本自动转成正式会议纪要 Word 文档，核心三步：知识库纠错 → 信息提取 + 口语书面化 → 模板填充。</p>
+  </div>
+  <div class="tip tip-info">
+    <span class="tip-icon">💡</span>
+    <div>Claude Code 是命令行工具，功能全、可自定义模型、处理较快；但需装 CLI、配登录，入门门槛略高。若你更想要「下客户端、扫码即用」的简单体验，请看 <strong>Workbuddy 版手册</strong>。</div>
+  </div>
+</section>
+
+<!-- 2 安装 -->
+<section class="chapter" id="install">
+  <div class="ch-head">
+    <h2><span>🛠️</span> 安装 Claude Code</h2>
+  </div>
+  <div class="steps">
+    <div class="step-item" data-screenshot="placeholder">
+      <div class="step-marker">1</div>
+      <div class="step-content">
+        <h4>安装 Claude Code CLI</h4>
+        <p>在 PowerShell 中运行：</p>
+        <div class="code-block"><span class="cmd">irm</span> https://claude.ai/install.ps1 <span class="cmd">| iex</span></div>
+      </div>
+    </div>
+    <div class="step-item" data-screenshot="placeholder">
+      <div class="step-marker">2</div>
+      <div class="step-content">
+        <h4>首次登录</h4>
+        <div class="code-block"><span class="cmd">claude</span></div>
+        <p>按提示完成 Anthropic 账号登录或 API Key 配置。如需用国产模型，见「常见问题」。</p>
+      </div>
+    </div>
+  </div>
+  <div class="tip tip-info"><span class="tip-icon">📖</span><div>完整文档：<a href="https://code.claude.com/docs/zh-CN/overview" target="_blank">Claude Code 官方文档</a></div></div>
+</section>
+
+<!-- 3 装技能 -->
+<section class="chapter" id="skill">
+  <div class="ch-head">
+    <h2><span>🧩</span> 安装技能</h2>
+    <p>meetings（出纪要）和 iTingnao（音频转写）都是技能。装好 meetings 即可用；要处理音频还需装 iTingnao。</p>
+  </div>
+  <div class="card-grid">
+    <div class="card" data-screenshot="placeholder">
+      <h3>📁 方法一：手动放置（推荐）</h3>
+      <p>把技能目录放到：</p>
+      <div class="code-block"><span class="path">$env:USERPROFILE\.claude\skills\meetings\</span></div>
+      <p style="margin-top:6px;">目录里至少要有 <code>SKILL.md</code>。meetings 还含 <code>config.json</code>、<code>CHANGELOG.md</code>。</p>
+    </div>
+    <div class="card" data-screenshot="placeholder">
+      <h3>🧩 方法二：插件市场</h3>
+      <div class="code-block"><span class="cmd">/plugin</span>
+<span class="cmd">/plugin marketplace add</span> <span class="path">owner/repo</span></div>
+      <p style="margin-top:6px;">在市场浏览安装，插件内技能自动可用。</p>
+    </div>
+    <div class="card" data-screenshot="placeholder">
+      <h3>🐙 方法三：Git 克隆</h3>
+      <div class="code-block"><span class="cmd">git clone</span> <span class="path">&lt;仓库&gt;</span> <span class="path">"$env:USERPROFILE\.claude\skills\meetings"</span></div>
+      <p style="margin-top:6px;">便于后续 <code>git pull</code> 更新。</p>
+    </div>
+  </div>
+  <div class="tip tip-warn"><span class="tip-icon">⚠️</span><div>处理音频文件需额外装 <code>iTingnao</code> 技能并配 API Key（<code>/itingnao config</code>）。只有文本文件则不用。</div></div>
+</section>
+
+<!-- 4 配置 -->
+<section class="chapter" id="config">
+  <div class="ch-head">
+    <h2><span>⚙️</span> 配置</h2>
+    <p>配置通常首次由部署人员搭好，日常无需改动。你唯一要在首次确认的是 <code>config.json</code> 里的 <code>project_root</code>。</p>
+  </div>
+  <div class="tip tip-success"><span class="tip-icon">✅</span><div><strong>业务人员</strong>：只需把下方 <code>project_root</code> 改成你自己的 ai-meeting 路径，其余保持不动。</div></div>
+  <div class="step-item" data-screenshot="placeholder">
+    <div class="step-marker">1</div>
+    <div class="step-content">
+      <h4>编辑 config.json</h4>
+      <p>技能目录下 <code>config.json</code>，设置 <code>project_root</code>：</p>
+      <div class="code-block">{
+  <span class="flag">"project_root"</span>: <span class="path">"C:\\Users\\你的用户名\\Documents\\ai-meeting"</span>
+}</div>
+    </div>
+  </div>
+  <div class="tip tip-warn"><span class="tip-icon">⚠️</span><div>其余配置（<code>registry.json</code> / <code>profile.json</code> / <code>profiles/</code> 目录）关系到模板与脚本匹配，不要轻易改动。知识库三件套的维护见部署说明。</div></div>
+</section>
+
+<!-- 5 使用 -->
+<section class="chapter" id="use">
+  <div class="ch-head">
+    <h2><span>📝</span> 使用 meetings</h2>
+    <p>按你的起点选择：已有文本稿 → 起点 1；只有录音 → 起点 2。</p>
+  </div>
+
+  <h4 class="sub" data-screenshot="placeholder">📌 起点 1：文本文件（不用 iTingnao）</h4>
+  <p style="font-size:14px;color:var(--gray-600);">已有转写好的文本稿，直接交给 meetings：</p>
+  <div class="code-block"><span class="cmd">/meetings</span> <span class="path">C:\会议\4月例会.txt</span> 这是例会，按例会出纪要</div>
+  <p style="font-size:14px;color:var(--gray-600);">给路径 + 一句自然语言（如「这是例会」），大模型据此识别会议类型，<strong>不用 <code>--type</code></strong>。</p>
+
+  <h4 class="sub" data-screenshot="placeholder">📌 起点 2：音频文件（一条指令调两次技能）</h4>
+  <p style="font-size:14px;color:var(--gray-600);">只有录音、还没转写时，一条指令里先后调用 iTingnao（转写）+ meetings（出纪要）：</p>
+  <div class="code-block"><span class="cmd">/itingnao transcribe</span> <span class="path">C:\会议\4月例会.mp3</span>
+<span class="cmd">/meetings</span> <span class="path">&lt;转写文本&gt;</span> 这是例会，按例会出纪要</div>
+  <p style="font-size:14px;color:var(--gray-600);">也可在一条需求里直接说「先转写这段录音再按例会出纪要」，让大模型自动串起两次技能调用。</p>
+
+  <h4 class="sub">🔧 需要更精确时：加参数</h4>
+  <div class="code-block"><span class="cmd">/meetings</span> <span class="path">C:\会议\4月例会.txt</span> \
+  <span class="flag">--type</span> 例会 \
+  <span class="flag">--format</span> 纪要 \
+  <span class="flag">--mode</span> 汇报会</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>参数</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><code>--type</code></td><td>指定会议类型配置套（最关键的定位参数）</td></tr>
+        <tr><td><code>--format</code></td><td>输出格式：督办单 | 纪要</td></tr>
+        <tr><td><code>--mode</code></td><td>会议模式：汇报会 | 讨论会 | 评审会</td></tr>
+        <tr><td><code>--existing</code></td><td>合并已填写的 Word 文件</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip tip-info"><span class="tip-icon">💡</span><div>多数会议不用带参数——一句自然语言或转录里的关键词通常足够。只有关键词不明显、或想要非默认输出时才加参数。</div></div>
+</section>
+
+<!-- 6 核对 -->
+<section class="chapter" id="check">
+  <div class="ch-head">
+    <h2><span>✅</span> 核对归档</h2>
+  </div>
+  <div class="steps">
+    <div class="step-item" data-screenshot="placeholder">
+      <div class="step-marker">1</div>
+      <div class="step-content"><h4>查看输出文件</h4><p>① 会议纪要 Word 文档 ② 来源标注（每条信息的来源时间戳与原文，可追溯）。</p></div>
+    </div>
+    <div class="step-item" data-screenshot="placeholder">
+      <div class="step-marker">2</div>
+      <div class="step-content"><h4>核对「待确认」字段</h4><p>纪要中标注「[待确认]」的字段（如日期推断、疑似责任人）需人工核实后定稿。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 FAQ -->
+<section class="chapter" id="faq">
+  <div class="ch-head"><h2><span>❓</span> 常见问题</h2></div>
+  <div class="card-grid">
+    <div class="card"><h3>/meetings 提示 Unknown skill？</h3><p>检查 <code>~/.claude/skills/meetings/SKILL.md</code> 是否存在，重启 Claude Code 后再试。</p></div>
+    <div class="card"><h3>能用国产模型吗？</h3><p>可以，通过 API 代理接入兼容 OpenAI 格式的国产模型（DeepSeek / 通义 / 智谱等）。复杂评审会建议优先用 Claude Sonnet/Opus。</p></div>
+    <div class="card"><h3>说话人识别不准？</h3><p>Step 1.5 会确认参会人员，仅在该名单内匹配说话人。</p></div>
+  </div>
+</section>
+
+<footer class="footer"><p>AI 会议记录助手 · Claude Code 版用户手册 · 2026年7月</p></footer>
+
+</div><!-- /wrap -->
+
+<!-- 截图悬停浮窗 -->
+<div id="shot-layer"><img alt="截图"><div class="shot-cap"></div></div>
+
+<script>
+// 截图占位图（未来把节点的 data-screenshot="placeholder" 换成图片路径即可显示真实截图）
+const PLACEHOLDER = "data:image/svg+xml," + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><rect width="100%" height="100%" fill="#f3f4f6"/><text x="50%" y="46%" font-size="22" fill="#9ca3af" text-anchor="middle" font-family="sans-serif">📷</text><text x="50%" y="58%" font-size="16" fill="#9ca3af" text-anchor="middle" font-family="sans-serif">截图待补充</text></svg>'
+);
+(function(){
+  const layer = document.getElementById('shot-layer');
+  const img = layer.querySelector('img');
+  const cap = layer.querySelector('.shot-cap');
+  document.querySelectorAll('[data-screenshot]').forEach(el => {
+    el.classList.add('has-shot');
+    el.addEventListener('mouseenter', () => {
+      const v = el.getAttribute('data-screenshot');
+      const isPlaceholder = !v || v === 'placeholder';
+      img.src = isPlaceholder ? PLACEHOLDER : v;
+      cap.textContent = isPlaceholder ? '截图待补充' : (el.getAttribute('data-shot-caption') || '');
+      layer.classList.add('show');
+    });
+    el.addEventListener('mousemove', e => {
+      const w = layer.offsetWidth, h = layer.offsetHeight;
+      let x = e.clientX + 16, y = e.clientY + 16;
+      if (x + w > window.innerWidth) x = e.clientX - w - 16;
+      if (y + h > window.innerHeight) y = window.innerHeight - h - 8;
+      layer.style.left = Math.max(8, x) + 'px';
+      layer.style.top = Math.max(8, y) + 'px';
+    });
+    el.addEventListener('mouseleave', () => layer.classList.remove('show'));
+  });
+})();
+</script>
+</body>
+</html>
