@@ -107,14 +107,14 @@
 <section class="chapter" id="install">
   <div class="ch-head"><h2><span>📲</span> 下载客户端并登录</h2></div>
   <div class="steps">
-    <div class="step-item" data-screenshot="placeholder">
+    <div class="step-item" data-screenshot="../img/download_workbuddy.gif">
       <div class="step-marker">1</div>
       <div class="step-content">
         <h4>下载 Workbuddy</h4>
         <p>访问 <a href="https://copilot.tencent.com/work/" target="_blank">copilot.tencent.com/work</a> 下载客户端并安装。</p>
       </div>
     </div>
-    <div class="step-item" data-screenshot="placeholder">
+    <div class="step-item" data-screenshot="../img/login_workbuddy.gif">
       <div class="step-marker">2</div>
       <div class="step-content">
         <h4>微信扫码登录</h4>
@@ -131,21 +131,21 @@
     <p>meetings（出纪要）和 iTingnao（音频转写）都是技能。先从网站下载，再导入 Workbuddy。</p>
   </div>
   <div class="steps">
-    <div class="step-item" data-screenshot="placeholder">
+    <div class="step-item" data-screenshot="../img/skill_download_github.gif">
       <div class="step-marker">1</div>
       <div class="step-content">
         <h4>下载技能</h4>
         <p>访问 GitHub 仓库 <a href="https://github.com/ricym/AI-meetings-cpcec" target="_blank">github.com/ricym/AI-meetings-cpcec</a>，点击 <strong>Code → Download ZIP</strong> 下载，解压后得到 <code>meetings</code> 技能目录（含 <code>SKILL.md</code> 等；<code>config.json</code> 首次运行自动生成）。</p>
       </div>
     </div>
-    <div class="step-item" data-screenshot="placeholder">
+    <div class="step-item" data-screenshot="../img/skill_import.gif">
       <div class="step-marker">2</div>
       <div class="step-content">
         <h4>导入 Workbuddy</h4>
         <p>打开 Workbuddy，在对话框点击 <strong>技能 → 导入技能</strong>，把解压出的 <code>SKILL.md</code> 内容粘贴进去即可。</p>
       </div>
     </div>
-    <div class="step-item" data-screenshot="placeholder">
+    <div class="step-item" data-screenshot="../img/import_skill_itingnao.gif">
       <div class="step-marker">3</div>
       <div class="step-content">
         <h4>（音频才需要）导入 iTingnao 技能</h4>
@@ -182,12 +182,12 @@
     <p>对话框操作：导入文件 → 选技能 → 发需求 → 等结果。Workbuddy 没有命令行参数，靠自然语言描述会议类型。</p>
   </div>
 
-  <h4 class="sub" data-screenshot="placeholder">📌 起点 1：文本文件（不用 iTingnao）</h4>
+  <h4 class="sub" data-screenshot="../img/prompt_simple.gif">📌 起点 1：文本文件（不用 iTingnao）</h4>
   <p style="font-size:14px;color:var(--gray-600);">对话框导入已转写的文本稿 → 选 meetings 技能 → 发送需求：</p>
   <div class="code-block">这是例会，按例会出纪要</div>
   <p style="font-size:14px;color:var(--gray-600);">靠自然语言识别会议类型，效果等同 Claude Code 的自然语言用法。</p>
 
-  <h4 class="sub" data-screenshot="placeholder">📌 起点 2：音频文件（一条指令调两次技能）</h4>
+  <h4 class="sub" data-screenshot="../img/prompt_skill_itingnao.gif">📌 起点 2：音频文件（一条指令调两次技能）</h4>
   <p style="font-size:14px;color:var(--gray-600);">对话框导入音频 → 选 iTingnao + meetings 两个技能 → 一条需求里直接说先转写再出纪要：</p>
   <div class="code-block">先转写这段录音，再按例会出会议纪要</div>
   <p style="font-size:14px;color:var(--gray-600);">iTingnao 完成转写后，大模型会接着用 meetings 生成纪要，无需手动分两步。</p>
@@ -197,7 +197,7 @@
 <section class="chapter" id="check">
   <div class="ch-head"><h2><span>✅</span> 核对归档</h2></div>
   <div class="steps">
-    <div class="step-item" data-screenshot="placeholder">
+    <div class="step-item" data-screenshot="../img/check.gif">
       <div class="step-marker">1</div>
       <div class="step-content"><h4>查看输出结果</h4><p>等待大模型返回会议纪要及来源标注（每条信息的来源时间戳与原文，可追溯）。</p></div>
     </div>
