@@ -15,10 +15,9 @@
 AI-meetings-cpcec/
 ├── README.md                      本说明
 ├── SKILL.md                       技能定义
-├── index.html                     GitHub Pages 首页（入口）
-├── manual-claude.html             Claude 版手册跳转页 → guidebook/
-├── manual-workbuddy.html          Workbuddy 版手册跳转页 → guidebook/
-└── guidebook/
+├── .github/workflows/deploy.yml   GitHub Actions：发布 guidebook/ 到 Pages
+└── guidebook/                     GitHub Pages 站点根目录
+    ├── index.html                 首页（meetings 技能介绍 + 两版手册导航）
     ├── manual-claude.html         Claude Code 用户手册
     └── manual-workbuddy.html      Workbuddy 用户手册
 ```
