@@ -15,27 +15,26 @@
 AI-meetings-cpcec/
 ├── README.md                      本说明
 ├── SKILL.md                       技能定义
-├── index.html                     GitHub Pages 首页（入口）
-├── manual-claude.html             Claude 版手册跳转页 → guidebook/
-├── manual-workbuddy.html          Workbuddy 版手册跳转页 → guidebook/
-├── guidebook/
+├── config.json                    项目根路径配置（首次需改 project_root）
+├── CHANGELOG.md                   更新记录
+├── guidebook/                     站点目录（GitHub Actions 从此发布到 Pages）
+│   ├── index.html                 首页
 │   ├── manual-claude.html         Claude Code 用户手册
 │   └── manual-workbuddy.html      Workbuddy 用户手册
-└── skills/
-    └── meetings/
-        ├── config.json            项目根路径配置（首次需改 project_root）
-        └── CHANGELOG.md           更新记录
+└── .github/workflows/deploy.yml   Pages 部署工作流
 ```
+
+> 在线访问：<https://ricym.github.io/AI-meetings-cpcec/>（由 `.github/workflows/deploy.yml` 把 `guidebook/` 发布到 GitHub Pages；需在仓库 Settings → Pages → Source 选「GitHub Actions」）。
 
 ## 快速开始
 
 ### 1. 获取技能
 
-下载本仓库（GitHub 页面 Code → Download ZIP），解压后得到根目录的 `SKILL.md`（技能定义）与 `skills/meetings/config.json`（配置）。
+下载本仓库（GitHub 页面 Code → Download ZIP），解压后得到根目录的 `SKILL.md`（技能定义）与 `config.json`（配置）。
 
 ### 2. 配置（首次）
 
-编辑 `skills/meetings/config.json`，把 `project_root` 改成你自己的 ai-meeting 目录：
+编辑 `config.json`，把 `project_root` 改成你自己的 ai-meeting 目录：
 
 ```json
 {
@@ -47,7 +46,7 @@ AI-meetings-cpcec/
 
 ### 3. 按工具使用
 
-- **Claude Code**：把 `SKILL.md` 与 `skills/meetings/config.json` 放进 `~/.claude/skills/meetings/`（两者需在同一技能目录），命令行运行 `/meetings 转录文本.txt 这是例会，按例会出纪要`
+- **Claude Code**：把 `SKILL.md` 与 `config.json` 放进 `~/.claude/skills/meetings/`（两者需在同一技能目录），命令行运行 `/meetings 转录文本.txt 这是例会，按例会出纪要`
 - **Workbuddy**：对话框「技能 → 导入技能」粘贴 `SKILL.md`，导入文件后选技能、发需求
 
 详见对应手册 HTML 文件（浏览器打开即可）。
