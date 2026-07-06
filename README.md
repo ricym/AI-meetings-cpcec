@@ -18,24 +18,20 @@ AI-meetings-cpcec/
 ├── index.html                     GitHub Pages 首页（入口）
 ├── manual-claude.html             Claude 版手册跳转页 → guidebook/
 ├── manual-workbuddy.html          Workbuddy 版手册跳转页 → guidebook/
-├── guidebook/
-│   ├── manual-claude.html         Claude Code 用户手册
-│   └── manual-workbuddy.html      Workbuddy 用户手册
-└── skills/
-    └── meetings/
-        ├── config.json            项目根路径配置（首次需改 project_root）
-        └── CHANGELOG.md           更新记录
+└── guidebook/
+    ├── manual-claude.html         Claude Code 用户手册
+    └── manual-workbuddy.html      Workbuddy 用户手册
 ```
 
 ## 快速开始
 
 ### 1. 获取技能
 
-下载本仓库（GitHub 页面 Code → Download ZIP），解压后得到根目录的 `SKILL.md`（技能定义）与 `skills/meetings/config.json`（配置）。
+下载本仓库（GitHub 页面 Code → Download ZIP），解压后得到根目录的 `SKILL.md`（技能定义）。
 
-### 2. 配置（首次）
+### 2. 配置（首次自动完成）
 
-编辑 `skills/meetings/config.json`，把 `project_root` 改成你自己的 ai-meeting 目录：
+无需手动编辑。首次运行 `/meetings` 时，技能会自动选定工作目录（默认 `$env:USERPROFILE\Documents\ai-meeting`，可自定义）、创建 `profiles/` `shells/` `output_files/` 子目录，并在技能目录下生成如下 `config.json`，之后所有路径基于该 `project_root` 推导：
 
 ```json
 {
@@ -47,7 +43,7 @@ AI-meetings-cpcec/
 
 ### 3. 按工具使用
 
-- **Claude Code**：把 `SKILL.md` 与 `skills/meetings/config.json` 放进 `~/.claude/skills/meetings/`（两者需在同一技能目录），命令行运行 `/meetings 转录文本.txt 这是例会，按例会出纪要`
+- **Claude Code**：把 `SKILL.md` 放进 `~/.claude/skills/meetings/`，命令行运行 `/meetings 转录文本.txt 这是例会，按例会出纪要`（首次运行自动建目录与配置）
 - **Workbuddy**：对话框「技能 → 导入技能」粘贴 `SKILL.md`，导入文件后选技能、发需求
 
 详见对应手册 HTML 文件（浏览器打开即可）。

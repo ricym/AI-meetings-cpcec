@@ -161,7 +161,7 @@
       <h3>📁 方法一：手动放置（推荐）</h3>
       <p>把技能目录放到：</p>
       <div class="code-block"><span class="path">$env:USERPROFILE\.claude\skills\meetings\</span></div>
-      <p style="margin-top:6px;">目录里至少要有 <code>SKILL.md</code>。meetings 还含 <code>config.json</code>、<code>CHANGELOG.md</code>。</p>
+      <p style="margin-top:6px;">目录里至少要有 <code>SKILL.md</code>。<code>config.json</code> 在首次运行时自动生成，无需手动放入。</p>
     </div>
     <div class="card" data-screenshot="placeholder">
       <h3>🧩 方法二：插件市场</h3>
@@ -181,15 +181,15 @@
 <!-- 4 配置 -->
 <section class="chapter" id="config">
   <div class="ch-head">
-    <h2><span>⚙️</span> 配置</h2>
-    <p>配置通常首次由部署人员搭好，日常无需改动。你唯一要在首次确认的是 <code>config.json</code> 里的 <code>project_root</code>。</p>
+    <h2><span>⚙️</span> 配置（首次自动完成）</h2>
+    <p>无需手动编辑。首次运行 <code>/meetings</code> 时，技能自动选定工作目录、创建子目录并生成 <code>config.json</code>。</p>
   </div>
-  <div class="tip tip-success"><span class="tip-icon">✅</span><div><strong>业务人员</strong>：只需把下方 <code>project_root</code> 改成你自己的 ai-meeting 路径，其余保持不动。</div></div>
+  <div class="tip tip-success"><span class="tip-icon">✅</span><div><strong>业务人员</strong>：直接运行 <code>/meetings</code>，首次确认工作目录（默认 <code>Documents\ai-meeting</code>）即可，其余自动完成。</div></div>
   <div class="step-item" data-screenshot="placeholder">
     <div class="step-marker">1</div>
     <div class="step-content">
-      <h4>编辑 config.json</h4>
-      <p>技能目录下 <code>config.json</code>，设置 <code>project_root</code>：</p>
+      <h4>首次运行自动生成 config.json</h4>
+      <p>技能检测到没有 <code>config.json</code> 时会自动创建（内容如下），<code>project_root</code> 即工作目录：</p>
       <div class="code-block">{
   <span class="flag">"project_root"</span>: <span class="path">"C:\\Users\\你的用户名\\Documents\\ai-meeting"</span>
 }</div>

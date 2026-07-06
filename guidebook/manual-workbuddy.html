@@ -135,7 +135,7 @@
       <div class="step-marker">1</div>
       <div class="step-content">
         <h4>下载技能</h4>
-        <p>访问 GitHub 仓库 <a href="https://github.com/ricym/AI-meeetings-cpcec" target="_blank">github.com/ricym/AI-meeetings-cpcec</a>，点击 <strong>Code → Download ZIP</strong> 下载，解压后得到 <code>meetings</code> 技能目录（含 <code>SKILL.md</code>、<code>config.json</code> 等）。</p>
+        <p>访问 GitHub 仓库 <a href="https://github.com/ricym/AI-meetings-cpcec" target="_blank">github.com/ricym/AI-meetings-cpcec</a>，点击 <strong>Code → Download ZIP</strong> 下载，解压后得到 <code>meetings</code> 技能目录（含 <code>SKILL.md</code> 等；<code>config.json</code> 首次运行自动生成）。</p>
       </div>
     </div>
     <div class="step-item" data-screenshot="placeholder">
@@ -158,15 +158,15 @@
 <!-- 4 配置 -->
 <section class="chapter" id="config">
   <div class="ch-head">
-    <h2><span>⚙️</span> 配置</h2>
-    <p>Workbuddy 同样读取本地文件，配置方式与 Claude Code 一致。你唯一要在首次确认的是 <code>config.json</code> 里的 <code>project_root</code>。</p>
+    <h2><span>⚙️</span> 配置（首次自动完成）</h2>
+    <p>Workbuddy 配置方式与 Claude Code 一致——首次运行自动生成，无需手动编辑。</p>
   </div>
-  <div class="tip tip-success"><span class="tip-icon">✅</span><div><strong>业务人员</strong>：只需把下方 <code>project_root</code> 改成你自己的 ai-meeting 路径，其余保持不动。知识库三件套放在该目录的 <code>profiles/</code> 下。</div></div>
+  <div class="tip tip-success"><span class="tip-icon">✅</span><div><strong>业务人员</strong>：直接发需求运行，首次确认工作目录（默认 <code>Documents\ai-meeting</code>）即可，知识库三件套自动放在该目录的 <code>profiles/</code> 下。</div></div>
   <div class="step-item" data-screenshot="placeholder">
     <div class="step-marker">1</div>
     <div class="step-content">
-      <h4>编辑 config.json</h4>
-      <p>确保技能的 <code>config.json</code> 中 <code>project_root</code> 指向你的 ai-meeting 目录：</p>
+      <h4>首次运行自动生成 config.json</h4>
+      <p>技能检测到没有 <code>config.json</code> 时会自动创建（内容如下），<code>project_root</code> 即工作目录：</p>
       <div class="code-block">{
   <span class="flag">"project_root"</span>: <span class="path">"C:\\Users\\你的用户名\\Documents\\ai-meeting"</span>
 }</div>

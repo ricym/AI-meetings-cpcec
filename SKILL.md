@@ -21,13 +21,37 @@ metadata:
 
 ---
 
-## 全局路径配置
+## 全局路径配置（首次自动初始化）
 
-**本技能所有路径基于 `config.json` 中的 `project_root` 推导。** 技能启动时，先读取本技能目录下的 `config.json`，获取 `project_root` 字段，后续所有路径均基于该值拼接。
+**本技能所有路径基于 `config.json` 中的 `project_root` 推导。** 仓库不再附带 `config.json`——首次运行时技能自动创建工作目录与配置，无需手动编辑。
 
-> `config.json` 格式：`{ "project_root": "C:\\Users\\xxx\\Documents\\ai-meeting" }`
+技能启动时，在本技能目录下查找 `config.json`：
 
-推导规则：
+### 情况一：`config.json` 已存在
+
+直接读取 `project_root` 字段，后续所有路径基于该值拼接。跳过初始化。
+
+### 情况二：`config.json` 不存在（首次使用）
+
+进入自动初始化：
+
+1. **确定 `project_root`**：默认取 `$env:USERPROFILE\Documents\ai-meeting`（Windows）/ `~/Documents/ai-meeting`（macOS/Linux）。用 AskUserQuestion 询问用户：
+   > "检测到 meetings 技能首次使用，将把工作目录设在哪里？"
+   - 选项 A：使用默认 `<默认路径>`（推荐）
+   - 选项 B：自定义路径（用户输入）
+2. **创建目录结构**（Bash/PowerShell `mkdir -p`）：
+   - `<project_root>/profiles/`（配置套与知识库三件套）
+   - `<project_root>/shells/`（脚本，如 `read_docx.py`，由部署人员放入）
+   - `<project_root>/output_files/`（输出纪要）
+3. **写入 `config.json`**（Write 工具，写到本技能目录下）：
+   ```json
+   { "project_root": "<用户选定的路径>" }
+   ```
+4. 继续进入 Step 1.0——首次使用检查会初始化知识库三件套模板。
+
+> 之后所有路径基于 `project_root` 推导。如需更换目录：改 `config.json` 里的 `project_root`，或删掉 `config.json` 重新触发初始化。
+
+### 推导规则（`project_root` 确定后）
 
 | 名称 | 路径 |
 |------|------|
